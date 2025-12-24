@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>LibModern - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="data.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;800&display=swap');
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f8fafc;
+        }
+
+        /* Sidebar màu nhạt hơn (Peach/Pastel Orange) */
+        .sidebar-vibrant {
+            background: linear-gradient(180deg, #FFB347 0%, #FFCC33 100%);
+            box-shadow: 10px 0 30px rgba(255, 179, 71, 0.15);
+        }
+
+        /* Ẩn thanh scroll cho Chrome, Safari và Firefox */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        /* Mục menu mặc định: Trong suốt hoàn toàn */
+        .nav-item {
+            margin-bottom: 0.5rem;
+            padding: 1rem 1.5rem;
+            border-radius: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 700;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: transparent;
+            /* Mặc định không có nền */
+        }
+
+        /* Hover: Chỉ thay đổi màu chữ và độ sáng, không hiện nền trắng */
+        .nav-item:hover {
+            color: #ffffff;
+            padding-left: 1.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            /* Nền mờ cực nhẹ khi hover */
+        }
+
+        /* Active: Chỉ mục này mới có nền trắng */
+        .nav-item.active {
+            background: #ffffff !important;
+            color: #FF8C00 !important;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transform: scale(1.02);
+        }
+
+        .nav-item span {
+            font-size: 1.25rem;
+        }
+
+        /* Nền vùng Main: Gradient từ trắng sang cam cực nhạt hoặc xanh nhạt */
+        .main-vibrant-bg {
+            background: linear-gradient(145deg, #f8fafc 0%, #fff5e6 50%, #f0f9ff 100%);
+            background-attachment: fixed;
+            /* Giữ nền cố định khi cuộn */
+        }
+
+        /* Thêm một chút hiệu ứng đổ bóng cho tiêu đề để bắt mắt hơn */
+        .header-title {
+            background: linear-gradient(to right, #1e293b, #FF8C00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+    </style>
+</head>
+
+<body class="flex min-h-screen">
+
+    <aside
+        class="w-80 sidebar-vibrant m-4 rounded-[3rem] shadow-2xl flex flex-col p-6 h-[calc(100vh-2rem)] sticky top-4">
+        <div class="mb-8 px-4 mt-2">
+            <h1 class="text-2xl font-black text-white tracking-tighter flex items-center gap-2">
+                <span class="p-2 bg-white rounded-xl text-orange-400 text-lg shadow-sm">L</span>
+                LIB<span class="text-slate-900">MODERN</span>
+            </h1>
+        </div>
+
+        <div class="bg-white/10 rounded-[2rem] p-5 mb-6 backdrop-blur-sm border border-white/20 text-center">
+            <div
+                class="w-14 h-14 bg-white rounded-2xl mx-auto mb-3 flex items-center justify-center text-2xl shadow-md">
+                👨‍💼</div>
+            <h3 class="text-white font-bold text-sm">Quản trị viên</h3>
+            <p class="text-white/60 text-[10px] font-black uppercase mt-1">Hệ thống thư viện</p>
+        </div>
+
+        <nav id="sidebarMenu" class="flex-1 overflow-y-auto no-scrollbar px-1">
+            <div class="nav-item active" onclick="loadModule('dashboard', this)"><span>📊</span> Tổng quan</div>
+            <div class="nav-item" onclick="loadModule('users', this)"><span>👥</span> Quản lý người dùng</div>
+            <div class="nav-item" onclick="loadModule('books', this)"><span>📚</span> Quản lý sách</div>
+            <div class="nav-item" onclick="loadModule('muontra', this)"><span>📋</span> Quản lý mượn trả</div>
+            <div class="nav-item" onclick="loadModule('overdue', this)"><span>⏰</span> Cảnh báo quá hạn</div>
+            <div class="nav-item" onclick="loadModule('logs', this)"><span>📒</span> Nhật ký hoạt động</div>
+            <div class="nav-item" onclick="loadModule('settings', this)"><span>⚙️</span> Cài đặt tài khoản</div>
+            <div class="nav-item" onclick="loadModule('backup', this)"><span>💾</span> Sao lưu & Khôi phục</div>
+        </nav>
+
+        <a href="index.html"
+            class="mt-4 flex items-center justify-center gap-2 bg-slate-900 text-white p-4 rounded-2xl font-black text-xs hover:bg-red-500 transition-all shadow-lg uppercase tracking-widest">
+            Đăng xuất 🚪
+        </a>
+    </aside>
+
+    <main class="flex-1 p-10 main-vibrant-bg overflow-y-auto no-scrollbar">
+        <header class="flex justify-between items-center mb-12">
+            <div>
+                <h2 id="moduleTitle" class="text-4xl font-black header-title tracking-tight">
+                    Tổng Quan Hệ Thống
+                </h2>
+                <p class="text-slate-400 font-medium mt-1">Chào mừng bạn trở lại với bảng điều hành.</p>
+            </div>
+
+            <button onclick="exportSystemReport()"
+                class="bg-gradient-to-r from-orange-500 to-yellow-400 text-white px-8 py-4 rounded-2xl font-bold shadow-lg shadow-orange-200 hover:scale-105 transition-all">
+                📊 Xuất báo cáo
+            </button>
+        </header>
+
+        <div id="mainContent" class="animate-in fade-in duration-500">
+        </div>
+    </main>
+    <script src="data.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="./js/api-adapter.js"></script>
+    <script src="./js/admin-controller/admin-router.js"></script> <!-- PHẢI TRƯỚC -->
+    <script src="./js/admin-controller/dashboard.js"></script>
+    <script src="./js/admin-controller/book-manager.js"></script>
+    <script src="./js/admin-controller/user-manager.js"></script>
+    <script src="./js/admin-controller/overdue-manager.js"></script>
+    <script src="./js/admin-controller/activity-log.js"></script>
+    <script src="./js/admin-controller/settings.js"></script>
+    <script src="./js/admin-controller/backup-restore.js"></script>
+    <script src="./js/admin-controller/loan-manager.js"></script>
+    <!-- <script src="admin-modules.js"></script> -->
+    <script>
+        window.onload = () => {
+            // Kiểm tra xem các file đã nạp thành công chưa
+            try {
+                const db = getLibData();
+                console.log("Dữ liệu đã sẵn sàng:", db);
+
+                // Kích hoạt module Dashboard
+                if (typeof loadModule === 'function') {
+                    loadModule('dashboard', document.querySelector('.nav-item.active'));
+                }
+
+                // Kích hoạt đồng bộ thời gian thực
+                if (typeof setupRealtimeSync === 'function') {
+                    setupRealtimeSync((newData) => {
+                        // Reload module hiện tại
+                        if (window.currentModule) {
+                            const activeNav = document.querySelector('.nav-item.active');
+                            loadModule(window.currentModule, activeNav);
+
+                            // Nếu đang ở Dashboard, cập nhật lại các thống kê
+                            if (window.currentModule === 'dashboard' && typeof renderDashboard === 'function') {
+                                renderDashboard(newData);
+                            }
+                        }
+                    });
+                }
+            } catch (e) {
+                console.error("Lỗi hệ thống: ", e.message);
+                alert("Lỗi: " + e.message + ". Hãy nhấn F12 để kiểm tra Console.");
+            }
+        };
+    </script>
+</body>
+
+</html>

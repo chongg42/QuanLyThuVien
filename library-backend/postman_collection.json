@@ -1,0 +1,193 @@
+{
+  "info": {
+    "name": "Library Management API",
+    "description": "Collection để test API quản lý thư viện",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tai_khoan\": \"admin\",\n  \"mat_khau\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/auth/admin/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "auth", "admin", "login"]
+            }
+          }
+        },
+        {
+          "name": "User Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ho_ten\": \"Nguyễn Văn Test\",\n  \"email\": \"test@example.com\",\n  \"so_dien_thoai\": \"0123456789\",\n  \"dia_chi\": \"Hà Nội\",\n  \"mat_khau\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/auth/user/register",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "auth", "user", "register"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Thể loại",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3000/api/the-loai",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "the-loai"]
+            }
+          }
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ten\": \"Khoa học\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/the-loai",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "the-loai"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sách",
+      "item": [
+        {
+          "name": "Get All Books",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3000/api/sach?page=1&limit=10",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "sach"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Book",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tieu_de\": \"Lập trình Python\",\n  \"tac_gia\": \"Nguyễn Văn A\",\n  \"the_loai_id\": 1,\n  \"nha_xuat_ban\": \"NXB Giáo Dục\",\n  \"nam_xuat_ban\": 2024,\n  \"so_luong\": 10,\n  \"mo_ta\": \"Sách học lập trình Python\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/sach",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "sach"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Mượn trả",
+      "item": [
+        {
+          "name": "Get All Loans",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3000/api/muon-tra",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "muon-tra"]
+            }
+          }
+        },
+        {
+          "name": "Create Loan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"doc_gia_id\": 1,\n  \"sach_id\": 1,\n  \"ngay_muon\": \"2024-12-24\",\n  \"han_tra\": \"2025-01-24\",\n  \"ghi_chu\": \"Test mượn sách\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/muon-tra",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "muon-tra"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>LibModern - Welcome to Future Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script src="data.js"></script>
+    <script src="./js/api-adapter.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow: hidden;
+        }
+
+        .bg-portal {
+            background: linear-gradient(135deg, #efdec5 0%, #f4d62c 50%, #87CEFA 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .glass-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+        }
+
+        .floating-icon {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+        }
+
+        .input-glow:focus {
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body class="bg-portal h-screen flex items-center justify-center relative">
+    <div id="particles-js"></div>
+
+    <div class="absolute top-20 left-20 text-6xl floating-icon opacity-50 select-none">📚</div>
+    <div class="absolute bottom-20 right-40 text-6xl floating-icon opacity-50 select-none" style="animation-delay: 2s">✨
+    </div>
+    <div class="absolute top-1/2 right-20 text-5xl floating-icon opacity-40 select-none" style="animation-delay: 1s">🔍
+    </div>
+
+    <div class="relative z-10 container mx-auto flex flex-col lg:flex-row items-center justify-center gap-16 px-6">
+
+        <div class="text-white text-center lg:text-left lg:w-1/2" data-aos="fade-right">
+            <h1 class="text-7xl lg:text-8xl font-black mb-6 tracking-tighter leading-none">
+                LIB<span class="text-slate-900">MODERN.</span>
+            </h1>
+            <p class="text-xl lg:text-2xl font-medium opacity-90 max-w-lg mb-8">
+                Cánh cửa dẫn đến hàng ngàn tri thức số. Trải nghiệm mượn sách bằng công nghệ QR đỉnh cao.
+            </p>
+            <div class="flex items-center gap-4 justify-center lg:justify-start">
+                <div class="w-12 h-1 w-24 bg-slate-900 rounded-full"></div>
+                <span class="font-bold tracking-widest uppercase text-sm">Tri thức là sức mạnh</span>
+            </div>
+        </div>
+
+        <div class="glass-container p-10 lg:p-12 rounded-[3.5rem] w-full max-w-md transition-all duration-500">
+
+            <div id="loginSection">
+                <h2 class="text-3xl font-extrabold text-white mb-2">Chào mừng trở lại</h2>
+                <p class="text-white/70 mb-8 text-sm">Vui lòng nhập thông tin để truy cập thư viện</p>
+
+                <div class="space-y-4">
+                    <div class="relative">
+                        <input type="text" id="userInp" placeholder="Email / Username"
+                            class="w-full p-5 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 outline-none input-glow transition-all">
+                    </div>
+                    <div class="relative">
+                        <input type="password" id="passInp" placeholder="Mật khẩu"
+                            class="w-full p-5 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 outline-none input-glow transition-all">
+                    </div>
+                    <button onclick="login()"
+                        class="w-full py-5 bg-slate-900 text-white font-extrabold rounded-2xl hover:scale-[1.02] transition-transform active:scale-95 shadow-2xl">
+                        ĐĂNG NHẬP
+                    </button>
+                    <div class="relative flex py-4 items-center">
+                        <div class="flex-grow border-t border-white/20"></div>
+                        <span class="flex-shrink mx-4 text-white/50 text-xs uppercase tracking-widest">Hoặc</span>
+                        <div class="flex-grow border-t border-white/20"></div>
+                    </div>
+                    <button onclick="toggleForm()"
+                        class="w-full py-4 bg-white/10 text-white font-bold rounded-2xl border border-white/30 hover:bg-white/20 transition-all">
+                        ĐĂNG KÝ TÀI KHOẢN
+                    </button>
+                </div>
+            </div>
+
+            <div id="regSection" class="hidden">
+                <h2 class="text-3xl font-extrabold text-white mb-2">Gia nhập cộng đồng</h2>
+                <p class="text-white/70 mb-8 text-sm">Chỉ mất 30 giây để bắt đầu hành trình</p>
+
+                <div class="space-y-4">
+                    <input type="text" id="regName" placeholder="Họ và tên của bạn"
+                        class="w-full p-5 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 outline-none input-glow transition-all">
+                    <input type="email" id="regEmail" placeholder="Địa chỉ Email"
+                        class="w-full p-5 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 outline-none input-glow transition-all">
+                    <input type="password" id="regPass" placeholder="Mật khẩu (tối thiểu 6 ký tự)"
+                        class="w-full p-5 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 outline-none input-glow transition-all">
+                    <button onclick="register()"
+                        class="w-full py-5 bg-green-500 text-white font-extrabold rounded-2xl hover:scale-[1.02] transition-transform active:scale-95 shadow-2xl">
+                        HOÀN TẤT ĐĂNG KÝ
+                    </button>
+                    <button onclick="toggleForm()" class="w-full text-center text-white/70 text-sm font-bold mt-4">
+                        Đã có tài khoản? Đăng nhập ngay
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function toggleForm() {
+            document.getElementById('loginSection').classList.toggle('hidden');
+            document.getElementById('regSection').classList.toggle('hidden');
+        }
+
+        async function login() {
+            const u = document.getElementById('userInp').value;
+            const p = document.getElementById('passInp').value;
+
+            if (!u || !p) return alert("Vui lòng nhập đầy đủ thông tin.");
+
+            try {
+                // Try Admin Login First
+                let result = await apiAdapter.loginAdmin(u, p).catch(() => null);
+
+                if (result && result.success) {
+                    window.location.href = 'admin.html';
+                    return;
+                }
+
+                // If not Admin, try User Login
+                result = await apiAdapter.loginUser(u, p).catch(() => null);
+
+                if (result && result.success) {
+                    window.location.href = 'user.html';
+                    return;
+                }
+
+                alert("Tài khoản hoặc mật khẩu không đúng.");
+            } catch (e) {
+                console.error(e);
+                alert("Đăng nhập thất bại: " + e.message);
+            }
+        }
+
+        async function register() {
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const pass = document.getElementById('regPass').value;
+
+            if (!name || !email || !pass) return alert("Vui lòng không để trống thông tin.");
+
+            try {
+                const userData = {
+                    hoTen: name,
+                    email: email,
+                    matKhau: pass
+                };
+
+                await apiAdapter.registerUser(userData);
+                alert("Đăng ký thành công! Bạn có thể đăng nhập ngay.");
+                toggleForm();
+
+            } catch (e) {
+                alert("Đăng ký thất bại: " + e.message);
+            }
+        }
+
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 60 },
+                "color": { "value": "#ffffff" },
+                "opacity": { "value": 0.4 },
+                "size": { "value": 2 },
+                "move": { "speed": 1.5 }
+            }
+        });
+    </script>
+</body>
+
+</html>
